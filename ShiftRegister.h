@@ -5,8 +5,8 @@
 
 class ShiftRegister {
   uint8_t m_num, m_clkPin, m_dataPin, m_loadPin;
-  const uint8_t m_loadSpeed = 20;
-  const uint8_t m_clkSpeed = 1;
+  const uint8_t m_loadSpeed = 200;
+  const uint8_t m_clkSpeed = 100;
   
   public:
     ShiftRegister();

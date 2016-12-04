@@ -16,7 +16,8 @@
 RocNet rocNet;
 ShiftRegister shiftRegister;
 
-const uint8_t numShiftRegisters = 4;
+const uint8_t numPCBs = 3 + 2;
+const uint8_t numShiftRegisters = numPCBs * 2;
 const uint8_t numIOs = numShiftRegisters * 8;
 const uint8_t clkPin = 2;
 const uint8_t dataPin = 0;
@@ -42,10 +43,13 @@ void loop() {
   shiftRegister.read(ioStates);
 
   for (uint8_t i = 0; i < numIOs; i++) {
-    ioStates[i] = !ioStates[i]; // Negative logic
+    if (i < 32) {
+      ioStates[i] = !ioStates[i]; // Negative logic for 32 shift register pcb.  
+    }
+    int debounceTime = i < 32 ? 250 : 10;
     if (ioStates[i] == true) {
       ioDebounce[i] = millis();
-    } else if (millis() - ioDebounce[i] < 1000) {
+    } else if (millis() - ioDebounce[i] < debounceTime) {
       ioStates[i] = true;
     }
     yield();
